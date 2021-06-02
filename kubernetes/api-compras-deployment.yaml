@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-compras
+  labels:
+    app: api-compras
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-compras
+  template:
+    metadata:
+      labels:
+        app: api-compras
+    spec:
+      containers:
+        - name: api-compras
+          image: kalatunga/api-compras:1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8089
+          env:
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_url
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_user
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_password
+      volumes:
+        - name: mysql-persistence-storage
+          persistentVolumeClaim:
+            claimName: db-mysql-pvc

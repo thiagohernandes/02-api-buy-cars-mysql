@@ -1,0 +1,24 @@
+server:
+  port: 8089
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://db-mysql:3306/dbcarros?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    testWhileIdle: true
+    validationQuery: SELECT 1
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+kubernetes:
+  url:
+    api:
+      carros: http://api-carros:8088
